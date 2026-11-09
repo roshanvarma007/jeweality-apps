@@ -72,4 +72,4 @@ We may update this Privacy Policy from time to time. Changes are posted on this 
 
 ## Contact Us
 
-If you have questions about this Privacy Policy, please [contact us](/contact).
+If you have questions about this Privacy Policy, please email us at [{{email}}](mailto:{{email}}) or visit our [contact page](/contact).

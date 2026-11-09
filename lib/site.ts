@@ -23,7 +23,7 @@ export const site = {
   ).replace(/\/$/, ""),
 
   /** Official developer/contact email (shown on Contact, Home and legal pages). */
-  email: "roshanvarma@jeweality.com",
+  email: "service@jeweality.com",
 
   /** Google Play developer profile URL. */
   playDeveloperUrl: "https://play.google.com/store/apps/developer?id=JEWEALITY",
