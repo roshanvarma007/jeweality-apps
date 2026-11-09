@@ -1,0 +1,51 @@
+# Netlify: fully static site built with `next build` (output: "export") into /out.
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"
+  # Set your final domain here or in the Netlify UI (no trailing slash):
+  # NEXT_PUBLIC_SITE_URL = "https://jeweality.com"
+
+# Netlify "pretty URLs" serve /privacy from privacy.html, so direct loads and refreshes
+# of /privacy, /terms, /apps and /contact never 404. Unknown paths get out/404.html.
+
+# Common alternate URLs people (and reviewers) try.
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy"
+  status = 301
+[[redirects]]
+  from = "/terms-of-service"
+  to = "/terms"
+  status = 301
+[[redirects]]
+  from = "/tos"
+  to = "/terms"
+  status = 301
+
+# Canonical domain (uncomment once the custom domain is live):
+# [[redirects]]
+#   from = "https://www.jeweality.com/*"
+#   to = "https://jeweality.com/:splat"
+#   status = 301
+#   force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+# HTML and other files use Netlify's default (max-age=0, must-revalidate + ETag),
+# so every deploy is picked up immediately. Hashed build assets never change: cache for a year.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

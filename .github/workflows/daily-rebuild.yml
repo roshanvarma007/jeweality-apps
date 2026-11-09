@@ -1,0 +1,29 @@
+# Rebuilds the Netlify site once a day so new Google Play apps appear automatically.
+# Every Netlify build runs `prebuild` (scripts/fetch-play-apps.mjs), which re-reads
+# https://play.google.com/store/apps/developer?id=JEWEALITY.
+#
+# Setup (one time):
+#   1. Netlify → Site configuration → Build & deploy → Build hooks → "Add build hook"
+#      (name it "Daily Play refresh", branch main) and copy the URL.
+#   2. GitHub repo → Settings → Secrets and variables → Actions → New repository secret
+#      Name: NETLIFY_BUILD_HOOK   Value: <the build hook URL>
+name: Daily rebuild (refresh Google Play apps)
+
+on:
+  schedule:
+    - cron: "30 2 * * *" # every day at 02:30 UTC (08:00 IST)
+  workflow_dispatch: # also allows a manual "Run workflow" button
+
+jobs:
+  trigger-netlify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build hook
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK secret is not set; skipping." && exit 0
+          fi
+          curl -fsS -X POST -d '{}' "$HOOK"
+          echo "Netlify rebuild triggered."
