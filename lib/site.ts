@@ -11,8 +11,16 @@ export const site = {
   description:
     "JEWEALITY creates useful mobile applications, productivity tools, utilities, games, and innovative digital experiences.",
 
-  /** PLACEHOLDER – final custom domain (no trailing slash). Can also be set via NEXT_PUBLIC_SITE_URL. */
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://jeweality.com").replace(/\/$/, ""),
+  /**
+   * Canonical site URL (no trailing slash), used for canonical tags, sitemap, robots and Open Graph.
+   * Order: NEXT_PUBLIC_SITE_URL (manual override) → URL (set by Netlify at build time to the
+   * site's primary domain, so a custom domain is picked up automatically) → Netlify subdomain.
+   */
+  url: (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.URL ||
+    "https://jeweality-apps.netlify.app"
+  ).replace(/\/$/, ""),
 
   /** Official developer/contact email (shown on Contact, Home and legal pages). */
   email: "roshanvarma@jeweality.com",
